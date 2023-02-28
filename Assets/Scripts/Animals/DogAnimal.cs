@@ -4,52 +4,32 @@ using UnityEngine;
 
 public class DogAnimal : AnimalRoot
 {
-    private void Update() 
-    {
-        HandleAttack();
-        HandleUltimate();
-    }
-
-    private void HandleAttack()
-    {
-        if(currentAttackSpeed > 0)
-        {
-            currentAttackSpeed -= Time.deltaTime;
-        }
-        else
-        {
-            if(Input.GetMouseButtonDown(0))
-            {
-                OnAttackButtonPressed();
-                currentAttackSpeed = AttackSpeed;
-            }    
-        }
-    }
-
-    private void HandleUltimate()
-    {
-        if(currentUltimateCoolDown > 0)
-        {
-            currentUltimateCoolDown -= Time.deltaTime;
-        }
-        else
-        {
-            if(Input.GetKeyDown(KeyCode.Space))
-            {
-                OnAnimalUltimate();
-                currentUltimateCoolDown =UltimateCoolDown;
-            }    
-        }
-    }
-
+    [SerializeField] private int timeBetweenUltimateAttackInMilliseconds;
     public override void OnAttackButtonPressed()
     {
         base.OnAttackButtonPressed();
+        BasicAttack();
     }
 
     public override void OnAnimalUltimate()
     {
         base.OnAnimalUltimate();
-        Debug.Log("Ultra Woof");
+        SpamAttacks();
+    }
+
+    private async void SpamAttacks()
+    {
+        controller.canMove = false;
+        for(int i = 0; i < 5; i++)
+        {
+            BasicAttack();
+            await System.Threading.Tasks.Task.Delay(timeBetweenUltimateAttackInMilliseconds);
+        }
+        controller.canMove = true;
+    }
+
+    public void BasicAttack()
+    {
+        Debug.Log("Damage Dealed");
     }
 }

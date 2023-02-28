@@ -5,49 +5,17 @@ using UnityEngine;
 public class PenguinAnimal : AnimalRoot
 {
     [SerializeField] private float ExplosionAltitude;
-    private void Update() 
+    [SerializeField] private int TimeToResetMovementInMilseconds;
+    [SerializeField] private GameObject eggPrefab;
+    [SerializeField] private Transform eggSpawnPosition;
+    private async void Eggxplosion()
     {
-        HandleAttack();
-        HandleUltimate();
-    }
-
-    private void HandleAttack()
-    {
-        if(currentAttackSpeed > 0)
-        {
-            currentAttackSpeed -= Time.deltaTime;
-        }
-        else
-        {
-            if(Input.GetMouseButtonDown(0))
-            {
-                OnAttackButtonPressed();
-                currentAttackSpeed = AttackSpeed;
-            }    
-        }
-    }
-
-    private void Eggxplosion()
-    {
+        controller.canMove = false;
+        Instantiate(eggPrefab,eggSpawnPosition.position,Quaternion.identity);
         rb.AddForce(Vector3.up * ExplosionAltitude,ForceMode.Impulse);
+        await System.Threading.Tasks.Task.Delay(TimeToResetMovementInMilseconds);
+        controller.canMove = true;
     }
-
-    private void HandleUltimate()
-    {
-        if(currentUltimateCoolDown > 0)
-        {
-            currentUltimateCoolDown -= Time.deltaTime;
-        }
-        else
-        {
-            if(Input.GetKeyDown(ultimateKeyCode))
-            {
-                OnAnimalUltimate();
-                currentUltimateCoolDown =UltimateCoolDown;
-            }    
-        }
-    }
-
     public override void OnAttackButtonPressed()
     {
         base.OnAttackButtonPressed();
@@ -55,6 +23,7 @@ public class PenguinAnimal : AnimalRoot
 
     public override void OnAnimalUltimate()
     {
+        base.OnAnimalUltimate();
         Eggxplosion();
     }
 }

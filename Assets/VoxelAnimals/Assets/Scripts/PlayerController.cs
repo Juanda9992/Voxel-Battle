@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerController : MonoBehaviour
 {
@@ -8,10 +9,17 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 3;
     public float jumpForce = 300;
     public float timeBeforeNextJump = 1.2f;
+    public bool isSelected = false;
+    public bool canMove = true;
     private float canJump = 0f;
-    Animator anim;
-    Rigidbody rb;
-    
+    private Animator anim;
+    private Rigidbody rb;
+
+    public static Action<PlayerController> OnNewCharacterSelected;
+    private void Awake() 
+    {
+        OnNewCharacterSelected += UpdateCharacter;    
+    }
     void Start()
     {
         anim = GetComponent<Animator>();
@@ -20,7 +28,10 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        ControllPlayer();
+        if(isSelected && canMove)
+        {
+            ControllPlayer();
+        }
     }
 
     void ControllPlayer()
@@ -47,5 +58,15 @@ public class PlayerController : MonoBehaviour
                 canJump = Time.time + timeBeforeNextJump;
                 anim.SetTrigger("jump");
         }
+    }
+
+    public void UpdateCharacter(PlayerController nextController)
+    {
+        this.isSelected = nextController == this;
+    }
+
+    private void OnDisable() 
+    {
+        OnNewCharacterSelected -= UpdateCharacter;    
     }
 }
