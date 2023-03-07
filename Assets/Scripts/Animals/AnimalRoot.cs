@@ -34,6 +34,11 @@ public class AnimalRoot : MonoBehaviour
             HandleUltimate();
         }
     }
+
+    public void TakeDamage(float nextDamage)
+    {
+        Health-= nextDamage;
+    }
     public virtual void OnAttackButtonPressed()
     {
         Debug.Log($"{animalName} has attack");
@@ -73,5 +78,10 @@ public class AnimalRoot : MonoBehaviour
                 this.currentUltimateCoolDown =this.UltimateCoolDown;
             }    
         }
+    }
+
+    public Rigidbody GetRigidBody()
+    {
+        return rb;
     }
 }

@@ -4,12 +4,15 @@ using UnityEngine;
 using DG.Tweening;
 public class EggBehaviour : MonoBehaviour
 {
+    [Header("Explosion Settings")]
     [SerializeField] private float ExplosionRadius;
     [SerializeField] private float ExplosionForce;
+
+    [Header("Damage Settings")]
+    [SerializeField] private float eggDamage;
     // Start is called before the first frame update
     private void Start()
     {
-        transform.DOScaleY(0,0);
         transform.DOScaleY(0.8f,0.4f).OnComplete(()=>Destroy(this.gameObject,0.4f));
     }
 
@@ -19,11 +22,16 @@ public class EggBehaviour : MonoBehaviour
         Collider[] affectedPlayers = Physics.OverlapSphere(transform.position,ExplosionRadius);
         foreach(var player in affectedPlayers)
         {
-            if(player.TryGetComponent<PlayerController>(out PlayerController extractedPlayer))
+            if(player.TryGetComponent<AnimalRoot>(out AnimalRoot extractedPlayer))
             {
                 if(!player.transform.CompareTag("Penguin"))
                 {
-                    extractedPlayer.GetComponent<Rigidbody>().AddExplosionForce(ExplosionForce,transform.position,ExplosionRadius,1,ForceMode.Impulse);
+                    Damage_Text textObj = DamageText_Controller.damageText_Controller_Instance.InstantiateText(extractedPlayer.transform);
+                    float damageByDistance = Vector3.Distance(transform.position,extractedPlayer.transform.position); 
+                    float realDamage = Mathf.Abs(damageByDistance - eggDamage);
+                    extractedPlayer.TakeDamage(realDamage);
+                    textObj.SetDamageText(realDamage);
+                    extractedPlayer.GetRigidBody().AddExplosionForce(ExplosionForce,transform.position,ExplosionRadius,1,ForceMode.Impulse);
                 }
             }
         }

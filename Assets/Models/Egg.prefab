@@ -112,3 +112,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ExplosionRadius: 5
   ExplosionForce: 13
+  eggDamage: 10
