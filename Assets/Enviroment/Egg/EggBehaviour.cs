@@ -29,7 +29,7 @@ public class EggBehaviour : MonoBehaviour
                     Damage_Text textObj = DamageText_Controller.damageText_Controller_Instance.InstantiateText(extractedPlayer.transform);
                     float damageByDistance = Vector3.Distance(transform.position,extractedPlayer.transform.position); 
                     float realDamage = Mathf.Abs(damageByDistance - eggDamage);
-                    extractedPlayer.TakeDamage(realDamage);
+                    extractedPlayer.TakeDamage(Mathf.Round(realDamage));
                     textObj.SetDamageText(realDamage);
                     extractedPlayer.GetRigidBody().AddExplosionForce(ExplosionForce,transform.position,ExplosionRadius,1,ForceMode.Impulse);
                 }

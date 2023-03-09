@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class PenguinAnimal : AnimalRoot
 {
+    [Header("Penguin Setup")]
     [SerializeField] private float ExplosionAltitude;
     [SerializeField] private int TimeToResetMovementInMilseconds;
     [SerializeField] private GameObject eggPrefab;
@@ -16,8 +18,10 @@ public class PenguinAnimal : AnimalRoot
         await System.Threading.Tasks.Task.Delay(TimeToResetMovementInMilseconds);
         controller.canMove = true;
     }
-    public override void OnAttackButtonPressed()
+    public async override void OnAttackButtonPressed()
     {
+        transform.DORotate(new Vector3(transform.rotation.eulerAngles.x + 15,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z),0.5f).SetEase(attackEase);
+        await System.Threading.Tasks.Task.Delay(250);
         base.OnAttackButtonPressed();
     }
 

@@ -10,7 +10,7 @@ public class Damage_Text : MonoBehaviour
     [SerializeField] private Ease enterEase;
     private void Awake() 
     {
-        transform.DOScale(1,enterTime).SetEase(enterEase).OnComplete(()=>transform.DOScale(0,enterTime/2).SetDelay(0.3f).SetEase(enterEase).OnComplete(()=>Destroy(this.gameObject)));
+        transform.DOScale(1,enterTime).SetEase(enterEase).OnComplete(()=>transform.DOScale(0,enterTime/2).SetDelay(0.15f).SetEase(enterEase).OnComplete(()=>Destroy(this.gameObject)));
     }
     public void SetDamageText(float amount)
     {

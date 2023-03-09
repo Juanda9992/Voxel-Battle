@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageText: {fileID: 8015937460115093169}
-  enterTime: 0.4
+  enterTime: 0.3
   enterEase: 4
 --- !u!1 &5529257473232700501
 GameObject:
