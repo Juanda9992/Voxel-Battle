@@ -11,9 +11,12 @@ public class AnimalRoot : MonoBehaviour
     public float Damage;
     public float AttackSpeed;
     public float UltimateCoolDown;
+    public float SprintSpeed;
+    protected bool isSprinting = false;
 
     [Header("Configurations")]
     [SerializeField] protected KeyCode ultimateKeyCode;
+    [SerializeField] private  KeyCode sprintKeyCode = KeyCode.LeftShift;
     protected float currentAttackSpeed;
     protected float currentUltimateCoolDown;
     protected Rigidbody rb;
@@ -40,12 +43,14 @@ public class AnimalRoot : MonoBehaviour
         {
             HandleAttack();
             HandleUltimate();
+            HandleSprint();
         }
     }
 
     public void TakeDamage(float nextDamage)
     {
         Health-= nextDamage;
+        DamageText_Controller.damageText_Controller_Instance.InstantiateText(transform).SetDamageText(nextDamage);
         foreach(var renderer in mRenderer)
         {
             renderer.material.DOColor(Color.red,0.25f).OnComplete(()=>
@@ -121,8 +126,58 @@ public class AnimalRoot : MonoBehaviour
         }
     }
 
+    private void HandleSprint()
+    {
+        if(Input.GetKeyDown(sprintKeyCode))
+        {
+            OnAnimalSprintStart();
+        }
+        if(Input.GetKeyUp(sprintKeyCode	))
+        {
+            OnAnimalSprintEnd();
+        }
+        if(isSprinting)
+        {
+            OnAnimalSprint();
+        }
+    }
+
+    public virtual void OnAnimalSprintStart()
+    {
+        controller.canMove = false;
+        rb.freezeRotation = true;
+        isSprinting = true;
+    }
+
+    public virtual void OnAnimalSprint()
+    {
+        controller.canMove = false;
+        isSprinting = true;
+    }
+
+    public virtual void OnAnimalSprintEnd()
+    {
+        controller.canMove = true;
+        isSprinting = false;
+        rb.freezeRotation = false;
+        rb.angularVelocity = Vector3.zero;
+        DOTween.To(()=> (Vector3)rb.velocity,x=>rb.velocity = x, new Vector3(0,rb.velocity.y,0),0.4f).SetDelay(0.3f);
+    }
+
     public Rigidbody GetRigidBody()
     {
         return rb;
+    }
+
+    private void OnCollisionEnter(Collision other) 
+    {
+        if(other.gameObject.TryGetComponent<AnimalRoot>(out AnimalRoot extractedAnimal))
+        {
+            if(extractedAnimal.isSprinting)
+            {
+                TakeDamage(2);
+                rb.AddExplosionForce(10,other.transform.position,20,10,ForceMode.VelocityChange);
+            }
+        }    
     }
 }

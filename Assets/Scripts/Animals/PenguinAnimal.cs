@@ -30,4 +30,17 @@ public class PenguinAnimal : AnimalRoot
         base.OnAnimalUltimate();
         Eggxplosion();
     }
+
+    public override void OnAnimalSprintStart()
+    {
+        base.OnAnimalSprintStart();
+        isSprinting = false;
+        rb.AddForce(transform.up * 2,ForceMode.VelocityChange);
+        transform.DORotate(new Vector3(transform.rotation.eulerAngles.x + 90,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z),0.3f).OnComplete(()=>isSprinting = true);
+    }
+
+    public override void OnAnimalSprint()
+    {
+        rb.AddForce(transform.up * SprintSpeed);
+    }
 }
