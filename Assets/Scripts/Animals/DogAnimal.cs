@@ -5,6 +5,12 @@ using DG.Tweening;
 public class DogAnimal : AnimalRoot
 {
     [SerializeField] private int timeBetweenUltimateAttackInMilliseconds;
+    private float originalSpeed;
+
+    private void Start() 
+    {
+        originalSpeed = controller.movementSpeed;    
+    }
     public override void OnAttackButtonPressed()
     {
         base.OnAttackButtonPressed();
@@ -38,5 +44,17 @@ public class DogAnimal : AnimalRoot
         transform.DOMove(transform.position + (transform.forward * 0.6f),0.1f).SetEase(attackEase);
         transform.DOMove(originalPos,0.2f).SetEase(attackEase).SetDelay(0.2f).OnComplete(()=>controller.canMove = true);
         
+    }
+
+    public override void OnAnimalSprint()
+    {
+        base.OnAnimalSprint();
+        controller.movementSpeed = SprintSpeed;
+    }
+
+    public override void OnAnimalSprintEnd()
+    {
+        base.OnAnimalSprintEnd();
+        controller.movementSpeed = originalSpeed;
     }
 }

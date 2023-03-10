@@ -13,6 +13,7 @@ public class AnimalRoot : MonoBehaviour
     public float UltimateCoolDown;
     public float SprintSpeed;
     protected bool isSprinting = false;
+    [SerializeField] protected AnimalType currentAnimal;
 
     [Header("Configurations")]
     [SerializeField] protected KeyCode ultimateKeyCode;
@@ -28,7 +29,7 @@ public class AnimalRoot : MonoBehaviour
     [Header("Attack Settings")]
     [SerializeField] protected Transform attackPosition;
     [SerializeField] protected float attackRadius;
-    private void Start() 
+    private void Awake() 
     {
         currentAttackSpeed = AttackSpeed;
         currentUltimateCoolDown = UltimateCoolDown;
@@ -144,14 +145,11 @@ public class AnimalRoot : MonoBehaviour
 
     public virtual void OnAnimalSprintStart()
     {
-        controller.canMove = false;
-        rb.freezeRotation = true;
         isSprinting = true;
     }
 
     public virtual void OnAnimalSprint()
     {
-        controller.canMove = false;
         isSprinting = true;
     }
 
@@ -175,9 +173,17 @@ public class AnimalRoot : MonoBehaviour
         {
             if(extractedAnimal.isSprinting)
             {
-                TakeDamage(2);
-                rb.AddExplosionForce(10,other.transform.position,20,10,ForceMode.VelocityChange);
+                if(extractedAnimal.currentAnimal == AnimalType.penguin)
+                {
+                    TakeDamage(2);
+                    rb.velocity = (Vector3.up + -extractedAnimal.transform.forward) * 300 * Time.fixedDeltaTime;
+                }
             }
         }    
     }
+}
+
+public enum AnimalType
+{
+    penguin,dog
 }

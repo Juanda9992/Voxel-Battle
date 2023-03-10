@@ -35,12 +35,15 @@ public class PenguinAnimal : AnimalRoot
     {
         base.OnAnimalSprintStart();
         isSprinting = false;
+        controller.canMove = false;
+        rb.freezeRotation = true;
         rb.AddForce(transform.up * 2,ForceMode.VelocityChange);
-        transform.DORotate(new Vector3(transform.rotation.eulerAngles.x + 90,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z),0.3f).OnComplete(()=>isSprinting = true);
+        transform.DORotate(new Vector3(90,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z),0.3f).OnComplete(()=>isSprinting = true);
     }
 
     public override void OnAnimalSprint()
     {
-        rb.AddForce(transform.up * SprintSpeed);
+        controller.canMove = false;
+        rb.AddForce(transform.up * SprintSpeed * Time.fixedDeltaTime,ForceMode.VelocityChange);
     }
 }

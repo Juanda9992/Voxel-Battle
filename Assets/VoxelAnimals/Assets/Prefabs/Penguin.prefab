@@ -31,6 +31,37 @@ Transform:
   m_Father: {fileID: 4936587561821370}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &296587386
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 296587387}
+  m_Layer: 0
+  m_Name: AttackPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &296587387
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 296587386}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.885, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4936587561821370}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1251968800230220
 GameObject:
   m_ObjectHideFlags: 0
@@ -232,6 +263,7 @@ Transform:
   m_Children:
   - {fileID: 4558486558690582}
   - {fileID: 110968715}
+  - {fileID: 296587387}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -234.18399, z: 0}
@@ -279,7 +311,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1755646104177140}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: f69aa9aa6ceb62f42a7a6a8affd3fdc2, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -315,11 +347,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animalName: Penguin
   Health: 25
-  Damage: 0
+  Damage: 3
   AttackSpeed: 0.8
-  UltimateCoolDown: 1
+  UltimateCoolDown: 7
+  SprintSpeed: 7
+  currentAnimal: 0
   ultimateKeyCode: 114
+  sprintKeyCode: 304
   attackEase: 25
+  attackPosition: {fileID: 296587387}
+  attackRadius: 1
   ExplosionAltitude: 8
   TimeToResetMovementInMilseconds: 800
   eggPrefab: {fileID: 6222812122581706753, guid: eff2f5c90b3815140bbb23584e078d31, type: 3}
